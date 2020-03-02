@@ -70,9 +70,9 @@ postgresql:
     existingClaim: data-backend-postgresql-0
 
   pgHbaConfiguration: |
-    local all all trust
-    host all all localhost trust
-    host microservice  micro 192.168.0.0/24 password
+#    local all all trust
+#    host all all localhost trust
+#    host microservice  micro 192.168.0.0/24 password
 
   initdbScripts:
     db-init.sql: |
