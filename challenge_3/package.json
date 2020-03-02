@@ -1,0 +1,21 @@
+{
+  "name": "querynestedobj",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "coverage": "jest --coverage"
+  },
+  "keywords": [],
+  "devDependencies": {
+    "@types/jest": "^24.0.25",
+    "jest": "^24.9.0",
+    "ts-jest": "^24.2.0",
+    "typescript": "^3.7.4"
+  },
+  "dependencies": {
+    "@types/lodash": "^4.14.149",
+    "lodash": "^4.17.15"
+  }
+}

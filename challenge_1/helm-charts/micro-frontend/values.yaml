@@ -1,0 +1,52 @@
+
+replicaCount: 1
+
+readinessProbe:
+  path: /app
+
+livenessProbe:
+  path: /app
+
+image:
+  repository: jenny/frontend
+  tag: v0.0.3
+  pullPolicy: IfNotPresent
+  containerPort: 80
+
+nameOverride: ""
+fullnameOverride: ""
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 80
+  nodePort: 30333
+
+ingress:
+  enabled: true
+  annotations:
+     kubernetes.io/ingress.class: nginx
+     kubernetes.io/tls-acme: "true"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+  hosts:
+    - host: xiaoqingough.biz
+      paths: ["/app/.*"]
+
+  tls: []
+    - secretName: chart-example-tls
+      hosts:
+        - chart-example.local
+
+resources: {}
+   limits:
+     cpu: 100m
+     memory: 128Mi
+   requests:
+     cpu: 100m
+     memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

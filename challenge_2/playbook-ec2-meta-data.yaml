@@ -1,0 +1,13 @@
+- name: To retrieve meta data from AWS EC2 instances
+  hosts: localhost
+  vars:
+    regions: ["eu-west-1", "eu-west-2", "eu-west-3"]
+  tasks:
+    - name: get instance info
+      local_action:
+        module: ec2_instance_info
+        region: "{{ item }}"
+
+      register: instance_info
+      with_items:
+        - "{{ regions }}"

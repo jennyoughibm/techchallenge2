@@ -1,0 +1,82 @@
+
+replicaCount: 1
+
+readinessProbe:
+  path: /api/isalive
+
+livenessProbe:
+  path: /api/isalive
+
+env:
+  "PSQL_DB_ADDRESS": "backend-postgresql"
+
+image:
+  repository: jennyough/microservice
+  tag: v0.0.1
+  pullPolicy: IfNotPresent
+  containerPort: 8000
+
+nameOverride: ""
+fullnameOverride: ""
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8000
+  nodePort: 30222
+
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    kubernetes.io/tls-acme: "true"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+
+  paths: ["/api/.*"]
+  hosts:
+    - xiaoqingough.biz
+  tls: []
+    - secretName: chart-example-tls
+      hosts:
+        - chart-example.local
+
+resources: {}
+   limits:
+    cpu: 100m
+    memory: 128Mi
+   requests:
+    cpu: 100m
+    memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+postgresql:
+  image:
+    registry: docker.io
+    repository: bitnami/postgresql
+    tag: latest
+    debug: true
+
+  postgresqlUsername: postgres
+
+  postgresqlPassword: password
+
+  persistence:
+    enabled: false
+    existingClaim: data-backend-postgresql-0
+
+  pgHbaConfiguration: |
+    local all all trust
+    host all all localhost trust
+    host microservice  micro 192.168.0.0/24 password
+
+  initdbScripts:
+    db-init.sql: |
+      CREATE DATABASE  microservice;
+      CREATE USER micro WITH ENCRYPTED PASSWORD 'password';
+      GRANT ALL PRIVILEGES ON DATABASE microservice TO micro;
+      ALTER DATABASE microservice OWNER TO micro;
